@@ -40,7 +40,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'グプタ朝時代に発達した文字。現代の多くのインド系文字の祖先。',
     languages: ['サンスクリット語'],
-    sample: 'गुप्त'
+    hasUnicodeSupport: false
   },
 
   // Sharada branch
@@ -596,7 +596,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '中央アジアのトカラ語で使用された。傾斜ブラーフミーとも呼ばれる。',
     languages: ['トカラ語'],
-    sample: '𝞴𝞸𝞾𝞳𝞻'
+    hasUnicodeSupport: false
   },
 
   // === Southern Brahmic ===
@@ -611,7 +611,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '南インドで発達したブラーフミー文字の変種。',
     languages: ['古タミル語'],
-    sample: '𑀢𑀫𑀺𑀴'
+    hasUnicodeSupport: false
   },
 
   // Pallava branch
@@ -626,7 +626,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'パッラヴァ朝で使用され、東南アジアの文字発達に大きな影響を与えた。',
     languages: ['サンスクリット語', 'タミル語'],
-    sample: 'पल्लव'
+    hasUnicodeSupport: false
   },
 
   {
@@ -1098,7 +1098,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '南東インドの初期文字。独立して発達した。',
     languages: ['プラークリット語'],
-    sample: '𑀩𑀝𑁆𑀝𑀺𑀧𑁆𑀭𑁄𑀮𑀼'
+    hasUnicodeSupport: false
   },
 
   // Kadamba branch

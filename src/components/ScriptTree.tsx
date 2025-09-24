@@ -268,7 +268,7 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
       .attr('text-anchor', 'start')  // Left-align for horizontal layout
       .attr('font-size', (d) => {
         if (d.depth === 0) return '16px'  // Brahmi - largest
-        if (d.depth === 1) return '14px'  // Second generation
+        if (d.depth === 1) return '12px'  // Second generation
         if (d.depth === 2) return '12px'  // Third generation
         return '11px'                     // Modern and later
       })

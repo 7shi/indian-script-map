@@ -65,11 +65,11 @@ body {
 }
 
 .tree-node {
-  transition: all 0.2s ease-out;
+  transition: filter 0.2s ease-out;
 }
 
 .tree-node:hover {
-  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .tree-node.selected {

@@ -64,7 +64,7 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
     const g = svg.append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top}) scale(${zoomLevel})`)
 
-    // Draw links
+    // Draw links with improved visibility
     g.selectAll('.tree-branch')
       .data(links)
       .enter()
@@ -76,10 +76,10 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
       )
       .style('stroke', (d) => {
         // Different stroke colors based on depth
-        if (d.target.depth === 1) return 'hsl(var(--primary) / 0.7)'
-        if (d.target.depth === 2) return 'hsl(var(--primary) / 0.5)'
-        if (d.target.depth === 3) return 'hsl(var(--secondary) / 0.7)'
-        return 'hsl(var(--border))'
+        if (d.target.depth === 1) return 'hsl(var(--primary) / 0.8)'
+        if (d.target.depth === 2) return 'hsl(var(--primary) / 0.6)'
+        if (d.target.depth === 3) return 'hsl(var(--secondary) / 0.8)'
+        return 'hsl(var(--muted-foreground) / 0.6)'
       })
       .style('stroke-width', (d) => {
         // Thicker strokes for main branches
@@ -88,7 +88,8 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
         return 2
       })
       .style('fill', 'none')
-      .style('opacity', 0.8)
+      .style('opacity', 0.9)
+      .style('stroke-dasharray', 'none')
 
     // Draw nodes
     const nodeGroups = g.selectAll('.tree-node')
@@ -125,18 +126,12 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
       })
       .style('stroke-width', (d) => d.depth === 0 ? 3 : 2)
       .on('mouseenter', function(event, d) {
-        const baseRadius = d.depth === 0 ? 14 : d.depth === 1 ? 12 : d.depth === 2 ? 10 : d.depth === 3 ? 8 : 6
         d3.select(this)
-          .transition()
-          .duration(200)
-          .attr('r', baseRadius * 1.3)
+          .style('filter', 'brightness(1.2)')
       })
       .on('mouseleave', function(event, d) {
-        const baseRadius = d.depth === 0 ? 14 : d.depth === 1 ? 12 : d.depth === 2 ? 10 : d.depth === 3 ? 8 : 6
         d3.select(this)
-          .transition()
-          .duration(200)
-          .attr('r', baseRadius)
+          .style('filter', 'none')
       })
 
     // Node labels

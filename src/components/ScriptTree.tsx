@@ -48,8 +48,13 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
 
     // Create tree layout
     const treeLayout = d3.tree<ScriptData>()
-      .size([width, height])
-      .separation((a, b) => (a.parent === b.parent ? 1 : 2) / a.depth)
+      .size([width, height * 0.9])  // Leave more space at bottom
+      .separation((a, b) => {
+        // Increase separation based on depth to prevent crowding
+        const baseSeparation = (a.parent === b.parent ? 1.2 : 2.5)
+        const depthFactor = Math.max(a.depth, b.depth) * 0.3 + 1
+        return baseSeparation * depthFactor / Math.max(a.depth, 1)
+      })
 
     const treeData = treeLayout(hierarchy)
     const nodes = treeData.descendants()
@@ -69,9 +74,21 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
         .x((d: TreeNode) => d.x || 0)
         .y((d: TreeNode) => d.y || 0)
       )
-      .style('stroke', 'hsl(var(--border))')
-      .style('stroke-width', 2)
+      .style('stroke', (d) => {
+        // Different stroke colors based on depth
+        if (d.target.depth === 1) return 'hsl(var(--primary) / 0.7)'
+        if (d.target.depth === 2) return 'hsl(var(--primary) / 0.5)'
+        if (d.target.depth === 3) return 'hsl(var(--secondary) / 0.7)'
+        return 'hsl(var(--border))'
+      })
+      .style('stroke-width', (d) => {
+        // Thicker strokes for main branches
+        if (d.target.depth === 1) return 3
+        if (d.target.depth === 2) return 2.5
+        return 2
+      })
       .style('fill', 'none')
+      .style('opacity', 0.8)
 
     // Draw nodes
     const nodeGroups = g.selectAll('.tree-node')
@@ -87,41 +104,69 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
 
     // Node circles
     nodeGroups.append('circle')
-      .attr('r', (d) => d.depth === 0 ? 12 : 8)
+      .attr('r', (d) => {
+        if (d.depth === 0) return 14  // Brahmi - largest
+        if (d.depth === 1) return 12  // Gupta, Southern Brahmi, Pallava
+        if (d.depth === 2) return 10  // Siddham, Nagari, etc.
+        if (d.depth === 3) return 8   // Modern scripts
+        return 6                      // Latest descendants
+      })
       .style('fill', (d) => {
         if (selectedScript?.id === d.data.id) return 'hsl(var(--accent))'
-        return d.depth === 0 ? 'hsl(var(--primary))' : 'hsl(var(--secondary))'
+        if (d.depth === 0) return 'hsl(var(--primary))'           // Brahmi
+        if (d.depth === 1) return 'hsl(var(--primary) / 0.8)'    // Second generation
+        if (d.depth === 2) return 'hsl(var(--secondary))'        // Third generation
+        if (d.depth === 3) return 'hsl(var(--secondary) / 0.8)'  // Modern scripts
+        return 'hsl(var(--muted))'                                // Latest
       })
       .style('stroke', (d) => {
         if (selectedScript?.id === d.data.id) return 'hsl(var(--accent-foreground))'
         return 'hsl(var(--border))'
       })
-      .style('stroke-width', 2)
+      .style('stroke-width', (d) => d.depth === 0 ? 3 : 2)
       .on('mouseenter', function(event, d) {
+        const baseRadius = d.depth === 0 ? 14 : d.depth === 1 ? 12 : d.depth === 2 ? 10 : d.depth === 3 ? 8 : 6
         d3.select(this)
           .transition()
           .duration(200)
-          .attr('r', (d.depth === 0 ? 12 : 8) * 1.2)
+          .attr('r', baseRadius * 1.3)
       })
       .on('mouseleave', function(event, d) {
+        const baseRadius = d.depth === 0 ? 14 : d.depth === 1 ? 12 : d.depth === 2 ? 10 : d.depth === 3 ? 8 : 6
         d3.select(this)
           .transition()
           .duration(200)
-          .attr('r', d.depth === 0 ? 12 : 8)
+          .attr('r', baseRadius)
       })
 
     // Node labels
     nodeGroups.append('text')
-      .attr('dy', (d) => d.depth === 0 ? 25 : 20)
+      .attr('dy', (d) => {
+        if (d.depth === 0) return 28      // Brahmi
+        if (d.depth === 1) return 25      // Second generation
+        if (d.depth === 2) return 22      // Third generation  
+        if (d.depth === 3) return 20      // Modern scripts
+        return 18                         // Latest
+      })
       .attr('text-anchor', 'middle')
-      .style('font-size', (d) => d.depth === 0 ? '14px' : '12px')
-      .style('font-weight', (d) => d.depth === 0 ? '600' : '500')
+      .style('font-size', (d) => {
+        if (d.depth === 0) return '16px'  // Brahmi - largest
+        if (d.depth === 1) return '14px'  // Second generation
+        if (d.depth === 2) return '12px'  // Third generation
+        return '11px'                     // Modern and later
+      })
+      .style('font-weight', (d) => {
+        if (d.depth === 0) return '700'   // Brahmi - boldest
+        if (d.depth === 1) return '600'   // Second generation
+        if (d.depth === 2) return '500'   // Third generation
+        return '400'                      // Modern scripts
+      })
       .style('fill', 'hsl(var(--foreground))')
       .text((d) => d.data.name)
       .each(function(d) {
         const text = d3.select(this)
         const words = d.data.name.split(/\s+/)
-        if (words.length > 1 && d.depth > 0) {
+        if (words.length > 1 && d.depth > 1) {  // Only wrap for deeper levels
           text.text('')
           words.forEach((word, i) => {
             text.append('tspan')
@@ -135,9 +180,15 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
     // Add period labels for leaf nodes
     nodeGroups.filter((d) => !d.children || d.children.length === 0)
       .append('text')
-      .attr('dy', (d) => d.depth === 0 ? 40 : 35)
+      .attr('dy', (d) => {
+        if (d.depth === 0) return 50
+        if (d.depth === 1) return 45
+        if (d.depth === 2) return 40
+        if (d.depth === 3) return 35
+        return 30
+      })
       .attr('text-anchor', 'middle')
-      .style('font-size', '10px')
+      .style('font-size', '9px')
       .style('fill', 'hsl(var(--muted-foreground))')
       .text((d) => d.data.period)
 

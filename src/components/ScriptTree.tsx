@@ -22,13 +22,36 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
-  // Handle wheel zoom
+  // Handle wheel zoom centered on mouse position
   const handleWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault()
+    
+    if (!containerRef.current) return
+    
     const delta = e.deltaY > 0 ? -0.1 : 0.1
     const newZoom = Math.max(0.5, Math.min(2, zoomLevel + delta))
+    
+    if (newZoom === zoomLevel) return
+    
+    // Get mouse position relative to the container
+    const rect = containerRef.current.getBoundingClientRect()
+    const mouseX = e.clientX - rect.left
+    const mouseY = e.clientY - rect.top
+    
+    // Calculate the zoom scale factor
+    const scaleFactor = newZoom / zoomLevel
+    
+    // Calculate the new transform to keep mouse position as zoom center
+    const newTransformX = mouseX - (mouseX - transform.x) * scaleFactor
+    const newTransformY = mouseY - (mouseY - transform.y) * scaleFactor
+    
+    setTransform({
+      x: newTransformX,
+      y: newTransformY
+    })
+    
     onZoomChange(newZoom)
-  }, [zoomLevel, onZoomChange])
+  }, [zoomLevel, onZoomChange, transform])
 
   // Handle drag scrolling
   const handleMouseDown = useCallback((e: React.MouseEvent) => {

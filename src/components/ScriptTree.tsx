@@ -21,6 +21,8 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
   const [transform, setTransform] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const [mouseDownPos, setMouseDownPos] = useState({ x: 0, y: 0 })
+  const [hasMovedThreshold, setHasMovedThreshold] = useState(false)
 
   // Handle wheel zoom centered on mouse position
   const handleWheel = useCallback((e: React.WheelEvent) => {
@@ -56,31 +58,49 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
   // Handle drag scrolling
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (e.target === svgRef.current || e.target === containerRef.current) {
-      setIsDragging(true)
+      setMouseDownPos({ x: e.clientX, y: e.clientY })
       setDragStart({ x: e.clientX - transform.x, y: e.clientY - transform.y })
+      setHasMovedThreshold(false)
       e.preventDefault()
     }
   }, [transform])
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (isDragging) {
-      setTransform({
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y
-      })
+    if (mouseDownPos.x !== 0 && mouseDownPos.y !== 0) {
+      const deltaX = Math.abs(e.clientX - mouseDownPos.x)
+      const deltaY = Math.abs(e.clientY - mouseDownPos.y)
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+      
+      // Check if we've moved beyond the threshold
+      if (!hasMovedThreshold && distance >= 3) {
+        setIsDragging(true)
+        setHasMovedThreshold(true)
+      }
+      
+      // Only update transform if we're actively dragging
+      if (isDragging || hasMovedThreshold) {
+        setTransform({
+          x: e.clientX - dragStart.x,
+          y: e.clientY - dragStart.y
+        })
+      }
     }
-  }, [isDragging, dragStart])
+  }, [mouseDownPos, dragStart, isDragging, hasMovedThreshold])
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false)
+    setMouseDownPos({ x: 0, y: 0 })
+    setHasMovedThreshold(false)
   }, [])
 
   // Set up global mouse event listeners for drag
   useEffect(() => {
-    if (isDragging) {
+    if (mouseDownPos.x !== 0 && mouseDownPos.y !== 0) {
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)
-      document.body.style.cursor = 'grabbing'
+      if (isDragging) {
+        document.body.style.cursor = 'grabbing'
+      }
     } else {
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseup', handleMouseUp)
@@ -92,7 +112,7 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
       document.removeEventListener('mouseup', handleMouseUp)
       document.body.style.cursor = ''
     }
-  }, [isDragging, handleMouseMove, handleMouseUp])
+  }, [mouseDownPos, isDragging, handleMouseMove, handleMouseUp])
 
   useEffect(() => {
     const updateDimensions = () => {

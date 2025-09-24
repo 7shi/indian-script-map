@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import * as d3 from 'd3'
 import { ScriptData, scriptData } from '@/lib/script-data'
 
@@ -15,7 +15,52 @@ interface TreeNode extends d3.HierarchyNode<ScriptData> {
 
 export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }: ScriptTreeProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
+  const [transform, setTransform] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+
+  // Handle drag scrolling
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (e.target === svgRef.current || e.target === containerRef.current) {
+      setIsDragging(true)
+      setDragStart({ x: e.clientX - transform.x, y: e.clientY - transform.y })
+      e.preventDefault()
+    }
+  }, [transform])
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (isDragging) {
+      setTransform({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y
+      })
+    }
+  }, [isDragging, dragStart])
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false)
+  }, [])
+
+  // Set up global mouse event listeners for drag
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      document.body.style.cursor = 'grabbing'
+    } else {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.body.style.cursor = ''
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.body.style.cursor = ''
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp])
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -67,9 +112,9 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
       d.y = temp
     })
 
-    // Create main group with zoom transform
+    // Create main group with zoom and drag transform
     const g = svg.append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top}) scale(${zoomLevel})`)
+      .attr('transform', `translate(${margin.left + transform.x}, ${margin.top + transform.y}) scale(${zoomLevel})`)
 
     // Draw links with improved visibility - horizontal layout
     g.selectAll('.tree-branch')
@@ -172,10 +217,15 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
     // Add period labels for leaf nodes - removed as requested
     // Period information is no longer displayed to avoid text overlap
 
-  }, [dimensions, selectedScript, zoomLevel, onScriptSelect])
+  }, [dimensions, selectedScript, zoomLevel, transform, onScriptSelect])
 
   return (
-    <div className="w-full h-full overflow-hidden bg-gradient-to-br from-background to-muted/30">
+    <div 
+      ref={containerRef}
+      className="w-full h-full overflow-hidden bg-gradient-to-br from-background to-muted/30 select-none"
+      onMouseDown={handleMouseDown}
+      style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+    >
       <svg
         ref={svgRef}
         width={dimensions.width}

@@ -74,22 +74,21 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
         .x((d: TreeNode) => d.x || 0)
         .y((d: TreeNode) => d.y || 0)
       )
-      .style('stroke', (d) => {
+      .attr('stroke', (d) => {
         // Different stroke colors based on depth
         if (d.target.depth === 1) return 'hsl(var(--primary) / 0.8)'
         if (d.target.depth === 2) return 'hsl(var(--primary) / 0.6)'
         if (d.target.depth === 3) return 'hsl(var(--secondary) / 0.8)'
         return 'hsl(var(--muted-foreground) / 0.6)'
       })
-      .style('stroke-width', (d) => {
+      .attr('stroke-width', (d) => {
         // Thicker strokes for main branches
         if (d.target.depth === 1) return 3
         if (d.target.depth === 2) return 2.5
         return 2
       })
-      .style('fill', 'none')
-      .style('opacity', 0.9)
-      .style('stroke-dasharray', 'none')
+      .attr('fill', 'none')
+      .attr('opacity', 0.9)
 
     // Draw nodes
     const nodeGroups = g.selectAll('.tree-node')
@@ -112,7 +111,7 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
         if (d.depth === 3) return 8   // Modern scripts
         return 6                      // Latest descendants
       })
-      .style('fill', (d) => {
+      .attr('fill', (d) => {
         if (selectedScript?.id === d.data.id) return 'hsl(var(--accent))'
         if (d.depth === 0) return 'hsl(var(--primary))'           // Brahmi
         if (d.depth === 1) return 'hsl(var(--primary) / 0.8)'    // Second generation
@@ -120,18 +119,18 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
         if (d.depth === 3) return 'hsl(var(--secondary) / 0.8)'  // Modern scripts
         return 'hsl(var(--muted))'                                // Latest
       })
-      .style('stroke', (d) => {
+      .attr('stroke', (d) => {
         if (selectedScript?.id === d.data.id) return 'hsl(var(--accent-foreground))'
         return 'hsl(var(--border))'
       })
-      .style('stroke-width', (d) => d.depth === 0 ? 3 : 2)
+      .attr('stroke-width', (d) => d.depth === 0 ? 3 : 2)
       .on('mouseenter', function(event, d) {
         d3.select(this)
-          .style('filter', 'brightness(1.2)')
+          .attr('filter', 'brightness(1.2)')
       })
       .on('mouseleave', function(event, d) {
         d3.select(this)
-          .style('filter', 'none')
+          .attr('filter', 'none')
       })
 
     // Node labels
@@ -144,19 +143,19 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
         return 18                         // Latest
       })
       .attr('text-anchor', 'middle')
-      .style('font-size', (d) => {
+      .attr('font-size', (d) => {
         if (d.depth === 0) return '16px'  // Brahmi - largest
         if (d.depth === 1) return '14px'  // Second generation
         if (d.depth === 2) return '12px'  // Third generation
         return '11px'                     // Modern and later
       })
-      .style('font-weight', (d) => {
+      .attr('font-weight', (d) => {
         if (d.depth === 0) return '700'   // Brahmi - boldest
         if (d.depth === 1) return '600'   // Second generation
         if (d.depth === 2) return '500'   // Third generation
         return '400'                      // Modern scripts
       })
-      .style('fill', 'hsl(var(--foreground))')
+      .attr('fill', 'hsl(var(--foreground))')
       .text((d) => d.data.name)
       .each(function(d) {
         const text = d3.select(this)
@@ -183,8 +182,8 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
         return 30
       })
       .attr('text-anchor', 'middle')
-      .style('font-size', '9px')
-      .style('fill', 'hsl(var(--muted-foreground))')
+      .attr('font-size', '9px')
+      .attr('fill', 'hsl(var(--muted-foreground))')
       .text((d) => d.data.period)
 
   }, [dimensions, selectedScript, zoomLevel, onScriptSelect])

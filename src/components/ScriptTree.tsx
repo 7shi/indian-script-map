@@ -46,13 +46,13 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
       return scriptData.filter(s => s.parent === d.id)
     })
 
-    // Create horizontal tree layout
+    // Create horizontal tree layout with increased width for each level
     const treeLayout = d3.tree<ScriptData>()
-      .size([height * 0.9, width * 0.9])  // Swap width and height for horizontal layout, use more space
+      .size([height * 0.9, width * 1.2])  // Increased width multiplier from 0.9 to 1.2
       .separation((a, b) => {
         // Increase separation based on depth to prevent crowding
-        const baseSeparation = (a.parent === b.parent ? 1.5 : 3.0)  // Increased separation
-        const depthFactor = Math.max(a.depth, b.depth) * 0.2 + 1
+        const baseSeparation = (a.parent === b.parent ? 1.8 : 3.6)  // Further increased separation (1.2x)
+        const depthFactor = Math.max(a.depth, b.depth) * 0.24 + 1.2  // Increased depth factor (1.2x)
         return baseSeparation * depthFactor / Math.max(a.depth, 1)
       })
 
@@ -169,21 +169,8 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
       .text((d) => d.data.name)
       // Remove text wrapping for horizontal layout as we have more horizontal space
 
-    // Add period labels for leaf nodes - adjusted for horizontal layout
-    nodeGroups.filter((d) => !d.children || d.children.length === 0)
-      .append('text')
-      .attr('dx', (d) => {
-        if (d.depth === 0) return 18
-        if (d.depth === 1) return 16
-        if (d.depth === 2) return 14
-        if (d.depth === 3) return 12
-        return 10
-      })
-      .attr('dy', '1.8em')  // Position below the main label
-      .attr('text-anchor', 'start')
-      .attr('font-size', '9px')
-      .attr('fill', 'hsl(var(--muted-foreground))')
-      .text((d) => d.data.period)
+    // Add period labels for leaf nodes - removed as requested
+    // Period information is no longer displayed to avoid text overlap
 
   }, [dimensions, selectedScript, zoomLevel, onScriptSelect])
 

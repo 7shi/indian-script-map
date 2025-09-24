@@ -76,7 +76,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'gurmukhi',
     name: 'グルムキー文字',
-    localName: 'ਗੁਰਮੁਖੀ',
+    localName: 'Gurmukhi',
     parent: 'landa',
     period: '16世紀～現在',
     regions: ['パンジャーブ'],
@@ -232,7 +232,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'devanagari',
     name: 'デーヴァナーガリー文字',
-    localName: 'देवनागरी',
+    localName: 'Devanagari',
     parent: 'nagari',
     period: '11世紀～現在',
     regions: ['北インド', 'ネパール'],
@@ -274,7 +274,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'gujarati',
     name: 'グジャラーティー文字',
-    localName: 'ગુજરાતી',
+    localName: 'Gujarati',
     parent: 'nagari',
     period: '14世紀～現在',
     regions: ['グジャラート州'],
@@ -331,7 +331,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'assamese',
     name: 'アッサム文字',
-    localName: 'অসমীয়া',
+    localName: 'Assamese',
     parent: 'kamarupi',
     period: '14世紀～現在',
     regions: ['アッサム州'],
@@ -360,7 +360,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'bengali-assamese',
     name: 'ベンガル・アッサム文字',
-    localName: 'বাংলা-অসমীয়া',
+    localName: 'Bengali-Assamese',
     parent: 'gaudi',
     period: '11世紀～現在',
     regions: ['ベンガル地方', 'アッサム州'],
@@ -374,7 +374,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'bengali',
     name: 'ベンガル文字',
-    localName: 'বাংলা',
+    localName: 'Bengali',
     parent: 'bengali-assamese',
     period: '14世紀～現在',
     regions: ['ベンガル地方'],
@@ -402,7 +402,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'odia',
     name: 'オディア文字',
-    localName: 'ଓଡ଼ିଆ',
+    localName: 'Odia',
     parent: 'gaudi',
     period: '13世紀～現在',
     regions: ['オディシャ州'],
@@ -488,7 +488,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'tibetan',
     name: 'チベット文字',
-    localName: 'བོད་ཡིག',
+    localName: 'Tibetan',
     parent: 'gupta',
     period: '7世紀～現在',
     regions: ['チベット', 'モンゴル', 'ヒマラヤ地域'],
@@ -632,7 +632,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'tamil',
     name: 'タミル文字',
-    localName: 'தமிழ்',
+    localName: 'Tamil',
     parent: 'pallava',
     period: '7世紀～現在',
     regions: ['南インド', 'スリランカ'],
@@ -661,7 +661,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'malayalam',
     name: 'マラヤーラム文字',
-    localName: 'മലയാളം',
+    localName: 'Malayalam',
     parent: 'grantha',
     period: '9世紀～現在',
     regions: ['南インド（ケーララ州）'],
@@ -732,7 +732,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'khmer',
     name: 'クメール文字',
-    localName: 'អក្សរខ្មែរ',
+    localName: 'Khmer',
     parent: 'pallava',
     period: '7世紀～現在',
     regions: ['カンボジア'],
@@ -775,7 +775,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'thai',
     name: 'タイ文字',
-    localName: 'อักษรไทย',
+    localName: 'Thai',
     parent: 'sukhothai',
     period: '14世紀～現在',
     regions: ['タイ'],
@@ -803,7 +803,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'lao',
     name: 'ラオ文字',
-    localName: 'ອັກສອນລາວ',
+    localName: 'Lao',
     parent: 'fakkham',
     period: '14世紀～現在',
     regions: ['ラオス'],
@@ -988,7 +988,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'burmese',
     name: 'ビルマ文字',
-    localName: 'မြန်မာအက္ခရာ',
+    localName: 'Burmese',
     parent: 'mon-burmese',
     period: '12世紀～現在',
     regions: ['ミャンマー'],
@@ -1075,7 +1075,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'sinhala',
     name: 'シンハラ文字',
-    localName: 'සිංහල',
+    localName: 'Sinhala',
     parent: 'tamil-brahmi',
     period: '9世紀～現在',
     regions: ['スリランカ'],
@@ -1133,7 +1133,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'telugu',
     name: 'テルグ文字',
-    localName: 'తెలుగు',
+    localName: 'Telugu',
     parent: 'telugu-kannada',
     period: '13世紀～現在',
     regions: ['南インド（アーンドラ・プラデーシュ州、テランガーナ州）'],
@@ -1147,7 +1147,7 @@ export const scriptData: ScriptData[] = [
   {
     id: 'kannada',
     name: 'カンナダ文字',
-    localName: 'ಕನ್ನಡ',
+    localName: 'Kannada',
     parent: 'telugu-kannada',
     period: '7世紀～現在',
     regions: ['南インド（カルナータカ州）'],

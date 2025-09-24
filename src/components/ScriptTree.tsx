@@ -65,6 +65,13 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
     }
   }, [transform])
 
+  // Handle drag starting from nodes/text
+  const handleNodeMouseDown = useCallback((clientX: number, clientY: number) => {
+    setMouseDownPos({ x: clientX, y: clientY })
+    setDragStart({ x: clientX - transform.x, y: clientY - transform.y })
+    setHasMovedThreshold(false)
+  }, [transform])
+
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (mouseDownPos.x !== 0 && mouseDownPos.y !== 0) {
       const deltaX = Math.abs(e.clientX - mouseDownPos.x)
@@ -205,8 +212,16 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
       .attr('class', 'tree-node')
       .attr('transform', (d: TreeNode) => `translate(${d.x || 0}, ${d.y || 0})`)
       .style('cursor', 'pointer')
+      .on('mousedown', function(event) {
+        handleNodeMouseDown(event.clientX, event.clientY)
+        event.preventDefault()
+        event.stopPropagation()
+      })
       .on('click', (event, d) => {
-        onScriptSelect(d.data)
+        // Only trigger click if we haven't moved beyond threshold (not a drag)
+        if (!hasMovedThreshold) {
+          onScriptSelect(d.data)
+        }
       })
 
     // Node circles
@@ -270,7 +285,7 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
     // Add period labels for leaf nodes - removed as requested
     // Period information is no longer displayed to avoid text overlap
 
-  }, [dimensions, selectedScript, zoomLevel, transform, onScriptSelect])
+  }, [dimensions, selectedScript, zoomLevel, transform, onScriptSelect, hasMovedThreshold])
 
   return (
     <div 

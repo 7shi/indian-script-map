@@ -10,6 +10,7 @@ export interface ScriptData {
   description?: string
   languages?: string[]
   sample?: string
+  hasUnicodeSupport?: boolean
 }
 
 export const scriptData: ScriptData[] = [
@@ -69,7 +70,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '商業取引に使用された簡略化された文字群の総称。',
     languages: ['パンジャーブ語', 'シンド語'],
-    sample: 'ਲੰਡਾ'
+    hasUnicodeSupport: false
   },
 
   {
@@ -167,7 +168,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'チャンバー地方で使用されたタクリ文字の変種。',
     languages: ['チャンバー語'],
-    sample: 'चम्बा'
+    hasUnicodeSupport: false
   },
 
   {
@@ -181,7 +182,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'ドーグリー語で使用される。',
     languages: ['ドーグリー語'],
-    sample: 'डोगरी'
+    hasUnicodeSupport: false
   },
 
   {
@@ -195,7 +196,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'シルマウル地方で使用されたタクリ文字の変種。',
     languages: ['シルマウリー語'],
-    sample: 'सिरमौरी'
+    hasUnicodeSupport: false
   },
 
   // Siddham branch
@@ -225,7 +226,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'デーヴァナーガリーなど現代文字の直接の祖先。',
     languages: ['サンスクリット語'],
-    sample: 'नागरी'
+    hasUnicodeSupport: false
   },
 
   {
@@ -267,7 +268,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '南インドで使用されたナーガリー文字の変種。',
     languages: ['サンスクリット語', 'カンナダ語'],
-    sample: 'नन्दिनागरी'
+    hasUnicodeSupport: false
   },
 
   {
@@ -324,7 +325,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '東インドで発達した悉曇文字の地域変種。',
     languages: ['アッサム語', 'サンスクリット語'],
-    sample: 'কামৰূপী'
+    hasUnicodeSupport: false
   },
 
   {
@@ -353,7 +354,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '東インドで発達した文字。ベンガル文字などの祖先。',
     languages: ['サンスクリット語'],
-    sample: 'গৌড়ী'
+    hasUnicodeSupport: false
   },
 
   {
@@ -367,7 +368,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'ベンガル文字とアッサム文字の共通祖先。',
     languages: ['ベンガル語', 'アッサム語'],
-    sample: 'বাংলা'
+    hasUnicodeSupport: false
   },
 
   {
@@ -424,7 +425,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'ネパールで発達した文字群の総称。',
     languages: ['ネパール語', 'ネワール語'],
-    sample: 'नेपाली'
+    hasUnicodeSupport: false
   },
 
   {
@@ -438,7 +439,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'ネパールで使用された古い文字。',
     languages: ['ネパール語'],
-    sample: 'भुजिमोल'
+    hasUnicodeSupport: false
   },
 
   {
@@ -480,7 +481,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'ネパールで現在使用されているデーヴァナーガリーの変種。',
     languages: ['ネパール語'],
-    sample: 'प्रचलित'
+    hasUnicodeSupport: false
   },
 
   // Tibetan branch
@@ -754,7 +755,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'タイ系文字の共通祖先（仮定）。',
     languages: ['古タイ語'],
-    sample: 'ไท'
+    hasUnicodeSupport: false
   },
 
   {
@@ -768,7 +769,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'スコータイ朝で使用された古タイ文字。',
     languages: ['古タイ語'],
-    sample: 'สุโขทัย'
+    hasUnicodeSupport: false
   },
 
   {
@@ -796,7 +797,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'ラオ文字の前身の一つ。',
     languages: ['ラオ語'],
-    sample: 'ฟักขาม'
+    hasUnicodeSupport: false
   },
 
   {
@@ -967,7 +968,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'モン文字とビルマ文字の共通祖先。',
     languages: ['モン語', 'ビルマ語'],
-    sample: 'မြန်မာ'
+    hasUnicodeSupport: false
   },
 
   {
@@ -1067,7 +1068,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '南インドで使用された古代文字。「丸い文字」の意味。',
     languages: ['タミル語', 'マラヤーラム語'],
-    sample: 'വട്ടെഴുത്ത്'
+    hasUnicodeSupport: false
   },
 
   // Sinhala
@@ -1112,7 +1113,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: 'カダンバ朝で使用された文字。テルグ・カンナダ文字の祖先。',
     languages: ['サンスクリット語', 'プラークリット語'],
-    sample: 'कदम्ब'
+    hasUnicodeSupport: false
   },
 
   {
@@ -1126,7 +1127,7 @@ export const scriptData: ScriptData[] = [
     direction: '左→右',
     description: '現代のテルグ文字とカンナダ文字の共通祖先。',
     languages: ['テルグ語', 'カンナダ語'],
-    sample: 'తెలుగు-ಕನ್ನಡ'
+    hasUnicodeSupport: false
   },
 
   {

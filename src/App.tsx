@@ -99,7 +99,7 @@ function App() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Script Sample */}
-                  {selectedScript.sample && (
+                  {selectedScript.sample && selectedScript.hasUnicodeSupport !== false && (
                     <div className="p-4 bg-muted/50 rounded-lg">
                       <p className="text-xs text-muted-foreground mb-2">サンプル文字</p>
                       <div className="script-sample text-center">

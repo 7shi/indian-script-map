@@ -6,6 +6,7 @@ interface ScriptTreeProps {
   onScriptSelect: (script: ScriptData | null) => void
   selectedScript: ScriptData | null
   zoomLevel: number
+  onZoomChange: (newZoom: number) => void
 }
 
 interface TreeNode extends d3.HierarchyNode<ScriptData> {
@@ -13,13 +14,21 @@ interface TreeNode extends d3.HierarchyNode<ScriptData> {
   y?: number
 }
 
-export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }: ScriptTreeProps) {
+export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, onZoomChange }: ScriptTreeProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
   const [transform, setTransform] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+
+  // Handle wheel zoom
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    e.preventDefault()
+    const delta = e.deltaY > 0 ? -0.1 : 0.1
+    const newZoom = Math.max(0.5, Math.min(2, zoomLevel + delta))
+    onZoomChange(newZoom)
+  }, [zoomLevel, onZoomChange])
 
   // Handle drag scrolling
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -224,6 +233,7 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
       ref={containerRef}
       className="w-full h-full overflow-hidden bg-gradient-to-br from-background to-muted/30 select-none"
       onMouseDown={handleMouseDown}
+      onWheel={handleWheel}
       style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
     >
       <svg

@@ -11,6 +11,10 @@ function App() {
   const [selectedScript, setSelectedScript] = useState<ScriptData | null>(null)
   const [zoomLevel, setZoomLevel] = useState(1)
 
+  const handleZoomChange = (newZoom: number) => {
+    setZoomLevel(newZoom)
+  }
+
   const handleZoomIn = () => {
     setZoomLevel(prev => Math.min(prev + 0.2, 2))
   }
@@ -59,6 +63,7 @@ function App() {
             onScriptSelect={setSelectedScript}
             selectedScript={selectedScript}
             zoomLevel={zoomLevel}
+            onZoomChange={handleZoomChange}
           />
         </div>
 

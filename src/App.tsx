@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
-import { MagnifyingGlassPlus, MagnifyingGlassMinus, ArrowCounterClockwise } from '@phosphor-icons/react'
+import { MagnifyingGlassPlus, MagnifyingGlassMinus, ArrowCounterClockwise, X } from '@phosphor-icons/react'
 import ScriptTree from '@/components/ScriptTree'
 import { ScriptData } from '@/lib/script-data'
 
@@ -69,7 +69,7 @@ function App() {
               <Card className="m-4 border-0 shadow-lg">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
-                    <div>
+                    <div className="flex-1">
                       <CardTitle className="text-xl font-semibold">
                         {selectedScript.name}
                       </CardTitle>
@@ -77,9 +77,19 @@ function App() {
                         {selectedScript.localName}
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary" className="text-xs">
-                      {selectedScript.period}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {selectedScript.period}
+                      </Badge>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-8 w-8 p-0"
+                        onClick={() => setSelectedScript(null)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">

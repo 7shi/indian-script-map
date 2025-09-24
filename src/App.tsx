@@ -1,15 +1,16 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 import { MagnifyingGlassPlus, MagnifyingGlassMinus, ArrowCounterClockwise, X } from '@phosphor-icons/react'
-import ScriptTree from '@/components/ScriptTree'
+import ScriptTree, { ScriptTreeHandle } from '@/components/ScriptTree'
 import { ScriptData } from '@/lib/script-data'
 
 function App() {
   const [selectedScript, setSelectedScript] = useState<ScriptData | null>(null)
   const [zoomLevel, setZoomLevel] = useState(1)
+  const scriptTreeRef = useRef<ScriptTreeHandle>(null)
 
   const handleZoomChange = (newZoom: number) => {
     setZoomLevel(newZoom)
@@ -26,6 +27,7 @@ function App() {
   const handleReset = () => {
     setZoomLevel(1)
     setSelectedScript(null)
+    scriptTreeRef.current?.resetPosition()
   }
 
   return (
@@ -60,6 +62,7 @@ function App() {
         {/* Tree View */}
         <div className="flex-1 relative overflow-hidden">
           <ScriptTree 
+            ref={scriptTreeRef}
             onScriptSelect={setSelectedScript}
             selectedScript={selectedScript}
             zoomLevel={zoomLevel}

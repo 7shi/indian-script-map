@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react'
 import * as d3 from 'd3'
 import { ScriptData, scriptData } from '@/lib/script-data'
 
@@ -9,12 +9,16 @@ interface ScriptTreeProps {
   onZoomChange: (newZoom: number) => void
 }
 
+export interface ScriptTreeHandle {
+  resetPosition: () => void
+}
+
 interface TreeNode extends d3.HierarchyNode<ScriptData> {
   x?: number
   y?: number
 }
 
-export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, onZoomChange }: ScriptTreeProps) {
+const ScriptTree = forwardRef<ScriptTreeHandle, ScriptTreeProps>(({ onScriptSelect, selectedScript, zoomLevel, onZoomChange }, ref) => {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
@@ -23,6 +27,16 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [mouseDownPos, setMouseDownPos] = useState({ x: 0, y: 0 })
   const [hasMovedThreshold, setHasMovedThreshold] = useState(false)
+
+  // Reset position to initial state
+  const resetPosition = useCallback(() => {
+    setTransform({ x: 0, y: 0 })
+  }, [])
+
+  // Expose reset function to parent
+  useImperativeHandle(ref, () => ({
+    resetPosition
+  }), [resetPosition])
 
   // Handle wheel zoom centered on mouse position
   const handleWheel = useCallback((e: React.WheelEvent) => {
@@ -303,4 +317,6 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
       />
     </div>
   )
-}
+})
+
+export default ScriptTree

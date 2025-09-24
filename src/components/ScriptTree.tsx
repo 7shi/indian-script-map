@@ -123,9 +123,10 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel, 
       return scriptData.filter(s => s.parent === d.id)
     })
 
-    // Create horizontal tree layout with increased width for each level
+    // Create horizontal tree layout with fixed width for each level
+    const fixedWidth = 1400  // Fixed total width instead of viewport-dependent
     const treeLayout = d3.tree<ScriptData>()
-      .size([height * 0.9, width * 1.2])  // Increased width multiplier from 0.9 to 1.2
+      .size([height * 0.9, fixedWidth])
       .separation((a, b) => {
         // Increase separation based on depth to prevent crowding
         const baseSeparation = (a.parent === b.parent ? 1.8 : 3.6)  // Further increased separation (1.2x)

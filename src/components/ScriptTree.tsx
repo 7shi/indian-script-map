@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
-import { ScriptData, scriptFamilyData } from '@/lib/script-data'
+import { ScriptData, scriptData } from '@/lib/script-data'
 
 interface ScriptTreeProps {
   onScriptSelect: (script: ScriptData | null) => void
@@ -41,9 +41,9 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
     const height = dimensions.height - margin.top - margin.bottom
 
     // Create hierarchy
-    const rootScript = scriptFamilyData.find(s => s.id === 'brahmi')!
+    const rootScript = scriptData.find(s => s.id === 'brahmi')!
     const hierarchy = d3.hierarchy(rootScript, (d) => {
-      return scriptFamilyData.filter(s => s.parent === d.id)
+      return scriptData.filter(s => s.parent === d.id)
     })
 
     // Create tree layout

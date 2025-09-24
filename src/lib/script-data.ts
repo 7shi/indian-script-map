@@ -101,6 +101,34 @@ export const scriptData: ScriptData[] = [
   },
 
   {
+    id: 'khudabadi',
+    name: 'フダーバーディー文字',
+    localName: 'Khudabadi',
+    parent: 'landa',
+    period: '17-20世紀',
+    regions: ['シンド'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'シンド地方で使用された商業文字。',
+    languages: ['シンド語'],
+    sample: '𑨀𑨁𑨂'
+  },
+
+  {
+    id: 'mahajani',
+    name: 'マハージャニー文字',
+    localName: 'Mahajani',
+    parent: 'landa',
+    period: '16-20世紀',
+    regions: ['パンジャーブ', 'ラージャスターン'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: '商人階級（マハージャナ）で使用された商業文字。',
+    languages: ['ヒンディー語', 'パンジャーブ語'],
+    sample: '𑅐𑅑𑅒'
+  },
+
+  {
     id: 'multani',
     name: 'ムルターニー文字',
     localName: 'Multani',
@@ -129,6 +157,20 @@ export const scriptData: ScriptData[] = [
   },
 
   {
+    id: 'chamba',
+    name: 'チャンバー文字',
+    localName: 'Chamba',
+    parent: 'takri',
+    period: '17-20世紀',
+    regions: ['ヒマチャル・プラデーシュ州（チャンバー地区）'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'チャンバー地方で使用されたタクリ文字の変種。',
+    languages: ['チャンバー語'],
+    sample: 'चम्बा'
+  },
+
+  {
     id: 'dogri',
     name: 'ドーグリー文字',
     localName: 'Dogri',
@@ -140,6 +182,20 @@ export const scriptData: ScriptData[] = [
     description: 'ドーグリー語で使用される。',
     languages: ['ドーグリー語'],
     sample: 'डोगरी'
+  },
+
+  {
+    id: 'sirmauri',
+    name: 'シルマウリー文字',
+    localName: 'Sirmauri',
+    parent: 'takri',
+    period: '18-20世紀',
+    regions: ['ヒマチャル・プラデーシュ州'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'シルマウル地方で使用されたタクリ文字の変種。',
+    languages: ['シルマウリー語'],
+    sample: 'सिरमौरी'
   },
 
   // Siddham branch
@@ -198,6 +254,20 @@ export const scriptData: ScriptData[] = [
     description: 'マラーティー語の筆記体として使用された。',
     languages: ['マラーティー語'],
     sample: '𑘦𑘻𑘚𑘲'
+  },
+
+  {
+    id: 'nandinagari',
+    name: 'ナンディナーガリー文字',
+    localName: 'Nandinagari',
+    parent: 'nagari',
+    period: '12-15世紀',
+    regions: ['南インド'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: '南インドで使用されたナーガリー文字の変種。',
+    languages: ['サンスクリット語', 'カンナダ語'],
+    sample: 'नन्दिनागरी'
   },
 
   {
@@ -358,6 +428,20 @@ export const scriptData: ScriptData[] = [
   },
 
   {
+    id: 'bhujimol',
+    name: 'ブジモル文字',
+    localName: 'Bhujimol',
+    parent: 'nepalese',
+    period: '12-18世紀',
+    regions: ['ネパール'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'ネパールで使用された古い文字。',
+    languages: ['ネパール語'],
+    sample: 'भुजिमोल'
+  },
+
+  {
     id: 'ranjana',
     name: 'ランジャナー文字',
     localName: 'Ranjana',
@@ -369,6 +453,34 @@ export const scriptData: ScriptData[] = [
     description: 'ネワール文字とも呼ばれる。装飾的な文字として現在も使用。',
     languages: ['ネワール語', 'サンスクリット語'],
     sample: '𑽀𑽁𑽂'
+  },
+
+  {
+    id: 'soyombo',
+    name: 'ソヨンボ文字',
+    localName: 'Soyombo',
+    parent: 'ranjana',
+    period: '17世紀',
+    regions: ['モンゴル'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'モンゴルの言語学者ザナバザルが創案した文字。',
+    languages: ['モンゴル語'],
+    sample: '𑪀𑪁𑪂'
+  },
+
+  {
+    id: 'pracalit',
+    name: 'プラチャリト文字',
+    localName: 'Pracalit',
+    parent: 'nepalese',
+    period: '18世紀～現在',
+    regions: ['ネパール'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'ネパールで現在使用されているデーヴァナーガリーの変種。',
+    languages: ['ネパール語'],
+    sample: 'प्रचलित'
   },
 
   // Tibetan branch
@@ -415,6 +527,20 @@ export const scriptData: ScriptData[] = [
   },
 
   {
+    id: 'limbu',
+    name: 'リンブ文字',
+    localName: 'Limbu',
+    parent: 'lepcha',
+    period: '18世紀～現在',
+    regions: ['ネパール東部', 'インド北東部'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'リンブ語で使用される。',
+    languages: ['リンブ語'],
+    sample: 'ᤛᤡᤖᤧᤴ'
+  },
+
+  {
     id: 'phags-pa',
     name: 'パスパ文字',
     localName: 'ʼPhags-pa',
@@ -426,6 +552,35 @@ export const scriptData: ScriptData[] = [
     description: 'モンゴル帝国の公式文字として制定。縦書きが特徴。',
     languages: ['モンゴル語', '中国語'],
     sample: 'ꡃꡋꡎ'
+  },
+
+  // Additional Tibetan-derived scripts
+  {
+    id: 'kalinga',
+    name: 'カリンガ文字',
+    localName: 'Kalinga',
+    parent: 'gupta',
+    period: '11-15世紀',
+    regions: ['オディシャ州'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'カリンガ地方で使用された文字。',
+    languages: ['オディア語', 'サンスクリット語'],
+    sample: '𑇍𑇎𑇏'
+  },
+
+  {
+    id: 'bhaiksuki',
+    name: 'バイクシュキー文字',
+    localName: 'Bhaiksuki',
+    parent: 'gupta',
+    period: '11-12世紀',
+    regions: ['東インド'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: '東インドで使用された仏教写本の文字。',
+    languages: ['サンスクリット語'],
+    sample: '𑰀𑰁𑰂'
   },
 
   // Tocharian
@@ -542,6 +697,34 @@ export const scriptData: ScriptData[] = [
     description: 'サウラーシュトラ語で使用される。',
     languages: ['サウラーシュトラ語'],
     sample: 'ꢂꢁꢃ'
+  },
+
+  {
+    id: 'dhives-akuru',
+    name: 'ディベス・アクル文字',
+    localName: 'Dhives Akuru',
+    parent: 'grantha',
+    period: '12-19世紀',
+    regions: ['モルディブ'],
+    type: 'アブギダ',
+    direction: '右→左',
+    description: 'モルディブの古い文字。',
+    languages: ['ディベヒ語'],
+    sample: '𑤀𑤁𑤂'
+  },
+
+  {
+    id: 'thirke',
+    name: 'ティルケ文字',
+    localName: 'Thirke',
+    parent: 'grantha',
+    period: '15-18世紀',
+    regions: ['ラクシャディープ諸島'],
+    type: 'アブギダ',
+    direction: '左→右',
+    description: 'ラクシャディープ諸島で使用された文字。',
+    languages: ['ディベヒ語'],
+    sample: 'തിര്‍കെ'
   },
 
   // Khmer branch

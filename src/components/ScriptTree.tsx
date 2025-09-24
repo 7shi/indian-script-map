@@ -36,7 +36,7 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
     const svg = d3.select(svgRef.current)
     svg.selectAll('*').remove()
 
-    const margin = { top: 50, right: 50, bottom: 50, left: 50 }
+    const margin = { top: 50, right: 300, bottom: 50, left: 50 }  // Increased right margin for horizontal layout
     const width = dimensions.width - margin.left - margin.right
     const height = dimensions.height - margin.top - margin.bottom
 
@@ -46,13 +46,13 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
       return scriptData.filter(s => s.parent === d.id)
     })
 
-    // Create tree layout
+    // Create horizontal tree layout
     const treeLayout = d3.tree<ScriptData>()
-      .size([width, height * 0.9])  // Leave more space at bottom
+      .size([height * 0.9, width * 0.9])  // Swap width and height for horizontal layout, use more space
       .separation((a, b) => {
         // Increase separation based on depth to prevent crowding
-        const baseSeparation = (a.parent === b.parent ? 1.2 : 2.5)
-        const depthFactor = Math.max(a.depth, b.depth) * 0.3 + 1
+        const baseSeparation = (a.parent === b.parent ? 1.5 : 3.0)  // Increased separation
+        const depthFactor = Math.max(a.depth, b.depth) * 0.2 + 1
         return baseSeparation * depthFactor / Math.max(a.depth, 1)
       })
 
@@ -60,32 +60,41 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
     const nodes = treeData.descendants()
     const links = treeData.links()
 
+    // Transform nodes for horizontal layout (swap x and y)
+    nodes.forEach(d => {
+      const temp = d.x
+      d.x = d.y
+      d.y = temp
+    })
+
     // Create main group with zoom transform
     const g = svg.append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top}) scale(${zoomLevel})`)
 
-    // Draw links with improved visibility
+    // Draw links with improved visibility - horizontal layout
     g.selectAll('.tree-branch')
       .data(links)
       .enter()
       .append('path')
       .attr('class', 'tree-branch')
-      .attr('d', d3.linkVertical<any, TreeNode>()
+      .attr('d', d3.linkHorizontal<any, TreeNode>()
         .x((d: TreeNode) => d.x || 0)
         .y((d: TreeNode) => d.y || 0)
       )
       .attr('stroke', (d) => {
-        // Different stroke colors based on depth
-        if (d.target.depth === 1) return 'hsl(var(--primary) / 0.8)'
-        if (d.target.depth === 2) return 'hsl(var(--primary) / 0.6)'
-        if (d.target.depth === 3) return 'hsl(var(--secondary) / 0.8)'
-        return 'hsl(var(--muted-foreground) / 0.6)'
+        // Different stroke colors based on depth for better visibility
+        if (d.target.depth === 1) return 'hsl(var(--primary) / 0.9)'
+        if (d.target.depth === 2) return 'hsl(var(--primary) / 0.7)'
+        if (d.target.depth === 3) return 'hsl(var(--accent) / 0.8)'
+        if (d.target.depth === 4) return 'hsl(var(--secondary) / 0.9)'
+        return 'hsl(var(--muted-foreground) / 0.7)'
       })
       .attr('stroke-width', (d) => {
         // Thicker strokes for main branches
         if (d.target.depth === 1) return 3
         if (d.target.depth === 2) return 2.5
-        return 2
+        if (d.target.depth === 3) return 2
+        return 1.5
       })
       .attr('fill', 'none')
       .attr('opacity', 0.9)
@@ -133,16 +142,17 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
           .attr('filter', 'none')
       })
 
-    // Node labels
+    // Node labels - adjusted for horizontal layout
     nodeGroups.append('text')
-      .attr('dy', (d) => {
-        if (d.depth === 0) return 28      // Brahmi
-        if (d.depth === 1) return 25      // Second generation
-        if (d.depth === 2) return 22      // Third generation  
-        if (d.depth === 3) return 20      // Modern scripts
-        return 18                         // Latest
+      .attr('dx', (d) => {
+        if (d.depth === 0) return 18      // Brahmi
+        if (d.depth === 1) return 16      // Second generation
+        if (d.depth === 2) return 14      // Third generation  
+        if (d.depth === 3) return 12      // Modern scripts
+        return 10                         // Latest
       })
-      .attr('text-anchor', 'middle')
+      .attr('dy', '0.35em')  // Center vertically
+      .attr('text-anchor', 'start')  // Left-align for horizontal layout
       .attr('font-size', (d) => {
         if (d.depth === 0) return '16px'  // Brahmi - largest
         if (d.depth === 1) return '14px'  // Second generation
@@ -157,31 +167,20 @@ export default function ScriptTree({ onScriptSelect, selectedScript, zoomLevel }
       })
       .attr('fill', 'hsl(var(--foreground))')
       .text((d) => d.data.name)
-      .each(function(d) {
-        const text = d3.select(this)
-        const words = d.data.name.split(/\s+/)
-        if (words.length > 1 && d.depth > 1) {  // Only wrap for deeper levels
-          text.text('')
-          words.forEach((word, i) => {
-            text.append('tspan')
-              .attr('x', 0)
-              .attr('dy', i === 0 ? 0 : '1.1em')
-              .text(word)
-          })
-        }
-      })
+      // Remove text wrapping for horizontal layout as we have more horizontal space
 
-    // Add period labels for leaf nodes
+    // Add period labels for leaf nodes - adjusted for horizontal layout
     nodeGroups.filter((d) => !d.children || d.children.length === 0)
       .append('text')
-      .attr('dy', (d) => {
-        if (d.depth === 0) return 50
-        if (d.depth === 1) return 45
-        if (d.depth === 2) return 40
-        if (d.depth === 3) return 35
-        return 30
+      .attr('dx', (d) => {
+        if (d.depth === 0) return 18
+        if (d.depth === 1) return 16
+        if (d.depth === 2) return 14
+        if (d.depth === 3) return 12
+        return 10
       })
-      .attr('text-anchor', 'middle')
+      .attr('dy', '1.8em')  // Position below the main label
+      .attr('text-anchor', 'start')
       .attr('font-size', '9px')
       .attr('fill', 'hsl(var(--muted-foreground))')
       .text((d) => d.data.period)
